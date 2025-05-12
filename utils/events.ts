@@ -18,6 +18,7 @@ type GoogleCalendarEventsResponse = {
     data: CalendarEvent[];
   };
   status: number;
+
 };
 
 

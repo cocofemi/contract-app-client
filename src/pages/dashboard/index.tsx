@@ -29,6 +29,7 @@ type Meetings = {
   linkedin: string;
   email: string;
   _id: string;
+  slug: string;
 };
 
 function Dashboard() {
@@ -100,6 +101,17 @@ function Dashboard() {
                         <p>
                           <strong>Scheduled Time:</strong>{" "}
                           {meeting.scheduledTime}
+                        </p>
+                        <p>
+                          <strong>Meeting Link: </strong>
+                          <Link
+                            href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/book/${meeting.slug}
+                          `}
+                            target="_blank"
+                            className="text-blue-600 underline"
+                          >
+                            View
+                          </Link>
                         </p>
                       </div>
                       <p className="text-sm text-gray-500">

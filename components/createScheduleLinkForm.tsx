@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../app/sidebar";
-
-import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FormData = {
   slug: string;
@@ -86,6 +86,16 @@ export default function CreateScheduleLinkForm({
     const json = await res.json();
     if (json.success) {
       setSuccessSlug(json.data.slug);
+      toast("Meeting created!. Copy your link the top and share", {
+        position: "top-right",
+        autoClose: 6000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
       alert("Failed to create link.");
     }
@@ -204,6 +214,7 @@ export default function CreateScheduleLinkForm({
           </button>
         </div>
       </div>
+      <ToastContainer />
     </Sidebar>
   );
 }
