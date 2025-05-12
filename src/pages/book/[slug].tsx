@@ -114,7 +114,7 @@ export default function BookingPage() {
             {selectedTime && (
               <div className="mt-6 space-y-4">
                 <div>
-                  <label htmlFor="">Link expiry (date)</label>
+                  <label htmlFor="">Date</label>
                   <input
                     type="date"
                     name="date"
