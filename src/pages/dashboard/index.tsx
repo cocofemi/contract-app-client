@@ -26,6 +26,7 @@ type Meetings = {
   augmentedNotes: string;
   createdAt: string | number | Date;
   scheduledTime: string;
+  scheduledDate: string;
   linkedin: string;
   email: string;
   _id: string;
@@ -101,6 +102,10 @@ function Dashboard() {
                         <p>
                           <strong>Scheduled Time:</strong>{" "}
                           {meeting.scheduledTime}
+                        </p>
+                        <p>
+                          <strong>Scheduled Date:</strong>{" "}
+                          {meeting?.scheduledDate}
                         </p>
                         <p>
                           <strong>Meeting Link: </strong>
