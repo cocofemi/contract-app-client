@@ -12,7 +12,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const [userEmail, setUserEmail] = useState("");
-  const [connectedEmails, setConnectedEmail] = useState([]);
+  const [connectedEmails, setConnectedEmail] = useState<string[]>([]);
 
   useEffect(() => {
     const cookies = new Cookies();
@@ -24,9 +24,9 @@ function Sidebar({ children }: { children: React.ReactNode }) {
     const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
 
-    getAccounts(user.userId).then((res: any) => {
-      if (res?.status === 200) {
-        const emails = res?.data.accounts.map((item: any) => item.email);
+    getAccounts(user.userId).then((res) => {
+      if (res.status === 200) {
+        const emails = res?.data.accounts.map((item) => item.email);
         setConnectedEmail(emails);
       } else {
         setConnectedEmail([]);
@@ -141,7 +141,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                 <span className="ml-3">{userEmail}</span>
               </Link>
             </li>
-            {connectedEmails.map((item: any) => (
+            {connectedEmails.map((item) => (
               <li key={item} className="mb-4 mt-4">
                 <Link
                   href={`/dashboard/account/${item}`}

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 export const googleLogin = async (googleData:any) => {
   try {
     const response = await axios({
@@ -14,7 +15,8 @@ export const googleLogin = async (googleData:any) => {
     });
     return response;
   } catch (error) {
-    return error;
+    console.error("Unable to login:", error);
+    throw error;
   }
 };
 
@@ -29,6 +31,7 @@ try {
     });
     return response;
   } catch (error) {
-    return error;
+    console.error("Failed to get user:", error);
+    throw error;
   }
 }

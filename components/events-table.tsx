@@ -7,26 +7,48 @@ type Props = {
   email: string;
 };
 
+type CalendarEvent = {
+  creator: { email: string };
+  created: string | number | Date;
+  id: string;
+  summary: string;
+  start: {
+    date: string;
+    dateTime: string;
+  };
+  end: {
+    date: string;
+    dateTime: string;
+  };
+};
+
 function EventsTable({ email }: Props) {
-  const [events, setEvents] = React.useState<any[]>([]);
+  const [events, setEvents] = React.useState<CalendarEvent[]>([]);
+
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     setEvents([]); // reset event list
 
     if (!email) return;
-    getSingleAccount(email).then((res: any) => {
-      console.log(res?.data);
-      googleCalendarEvents(res?.data?.userId || res?.data?._id, email).then(
-        (res: any) => {
+    getSingleAccount(email).then((res) => {
+      const account = res.data;
+      googleCalendarEvents(account.userId || res?.data?._id, email)
+        .then((res) => {
           setLoading(false);
           if (res?.status === 200) {
-            setEvents(res?.data.data);
+            setEvents(res.status === 200 ? res.data.data : []);
           } else {
             setEvents([]);
           }
-        }
-      );
+        })
+        .catch((err) => {
+          console.error("Event fetch failed:", err);
+          setEvents([]);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     });
   }, [email]);
 
@@ -77,7 +99,7 @@ function EventsTable({ email }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map((item: any) => (
+                  {events.map((item) => (
                     <tr
                       key={item.id}
                       className="border-b border-table_border bg-white text-gray-900 hover:bg-gray-50  "

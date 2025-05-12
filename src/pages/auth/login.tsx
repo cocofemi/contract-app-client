@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { googleLogin } from "../../../utils/auth";
 import { useRouter } from "next/router";
@@ -9,10 +9,10 @@ function Login() {
   const router = useRouter();
   // const [loading, setLoading] = useState(false);
 
-  const handleGoogleLogin = (googleData: any) => {
+  const handleGoogleLogin = (googleData: unknown) => {
     // setLoading(true);
     googleLogin(googleData)
-      .then((res: any) => {
+      .then((res) => {
         console.log(res?.data);
         cookies.set("contract_app_user", JSON.stringify(res.data), {
           path: "/",

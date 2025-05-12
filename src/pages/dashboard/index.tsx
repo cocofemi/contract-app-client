@@ -4,12 +4,38 @@ import Cookies from "universal-cookie";
 
 import Sidebar from "../../../app/sidebar";
 import { googleCalendarEvents } from "../../../utils/events";
+import Link from "next/link";
+
+type CalendarEvent = {
+  creator: { email: string };
+  created: string | number | Date;
+  id: string;
+  summary: string;
+  start: {
+    date: string;
+    dateTime: string;
+  };
+  end: {
+    date: string;
+    dateTime: string;
+  };
+};
+
+type Meetings = {
+  answers: string[];
+  augmentedNotes: string;
+  createdAt: string | number | Date;
+  scheduledTime: string;
+  linkedin: string;
+  email: string;
+  _id: string;
+};
 
 function Dashboard() {
   const [loading, setLoading] = useState(true);
-  const [, setEvents] = useState([]);
+  const [, setEvents] = React.useState<CalendarEvent[]>([]);
 
-  const [meetings, setMeetings] = useState<any[]>([]);
+  const [meetings, setMeetings] = useState<Meetings[]>([]);
   useEffect(() => {
     const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
@@ -27,8 +53,7 @@ function Dashboard() {
   useEffect(() => {
     const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
-    googleCalendarEvents(user?.userId, user?.email).then((res: any) => {
-      console.log(res);
+    googleCalendarEvents(user?.userId, user?.email).then((res) => {
       setLoading(false);
       if (res?.status === 200) {
         setEvents(res?.data.data);
@@ -63,13 +88,13 @@ function Dashboard() {
                         {meeting.linkedin && (
                           <p>
                             <strong>LinkedIn:</strong>{" "}
-                            <a
+                            <Link
                               href={meeting.linkedin}
                               target="_blank"
                               className="text-blue-600 underline"
                             >
                               View
-                            </a>
+                            </Link>
                           </p>
                         )}
                         <p>

@@ -18,8 +18,7 @@ function AddHubspot() {
   };
 
   useEffect(() => {
-    getUser(user?.userId).then((res: any) => {
-      console.log(res?.data.hubspot);
+    getUser(user?.userId).then((res) => {
       setHubSpot(res?.data.hubspot);
     });
   });

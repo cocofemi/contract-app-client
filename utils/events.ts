@@ -1,6 +1,27 @@
 import axios from "axios";
 
-export const googleCalendarEvents = async (user_id?:string, email?:string ) => {
+type CalendarEvent = {
+  creator: any;
+  created: string | number | Date;
+  id: string;
+  summary: string;
+  start: {
+    date: any; dateTime: string 
+};
+  end: {
+    date: any; dateTime: string 
+};
+};
+
+type GoogleCalendarEventsResponse = {
+  data: {
+    data: CalendarEvent[];
+  };
+  status: number;
+};
+
+
+export const googleCalendarEvents = async (user_id?:string, email?:string ) : Promise<GoogleCalendarEventsResponse> => {
   try {
     const response = await axios({
       url: `${process.env.NEXT_PUBLIC_SERVER_URL}/get/events?user_id=${user_id}&email=${email}`,
@@ -11,7 +32,8 @@ export const googleCalendarEvents = async (user_id?:string, email?:string ) => {
     });
     return response;
   } catch (error) {
-    return error;
+    console.error("Failed to fetch events:", error);
+    throw error;
   }
 };
 

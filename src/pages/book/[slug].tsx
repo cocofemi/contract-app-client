@@ -4,13 +4,19 @@ import Cookies from "universal-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+type LinkData = {
+  _id: string;
+  meetingLength: number;
+  questions: [];
+};
+
 export default function BookingPage() {
   const router = useRouter();
   const cookies = new Cookies();
   const user = cookies.get("contract_app_user");
 
   const { slug } = router.query;
-  const [linkData, setLinkData] = useState<any>(null);
+  const [linkData, setLinkData] = useState<LinkData | null>(null);
 
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [email, setEmail] = useState("");
@@ -126,20 +132,21 @@ export default function BookingPage() {
                   />
                 </div>
 
-                {linkData.questions?.map((question: string, i: number) => (
-                  <div key={i}>
-                    <label className="block font-medium">{question}</label>
-                    <textarea
-                      value={answers[i]}
-                      onChange={(e) => {
-                        const updated = [...answers];
-                        updated[i] = e.target.value;
-                        setAnswers(updated);
-                      }}
-                      className="w-full border px-3 py-2 rounded"
-                    />
-                  </div>
-                ))}
+                {linkData &&
+                  linkData.questions?.map((question: string, i: number) => (
+                    <div key={i}>
+                      <label className="block font-medium">{question}</label>
+                      <textarea
+                        value={answers[i]}
+                        onChange={(e) => {
+                          const updated = [...answers];
+                          updated[i] = e.target.value;
+                          setAnswers(updated);
+                        }}
+                        className="w-full border px-3 py-2 rounded"
+                      />
+                    </div>
+                  ))}
 
                 <button
                   className={`w-full py-2 px-4 rounded ${
