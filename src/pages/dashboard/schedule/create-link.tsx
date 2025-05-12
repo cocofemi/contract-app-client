@@ -14,6 +14,8 @@ function CreateLinkForm() {
     if (res.ok) {
       const json = await res.json();
       setSchedulingWindowId(json.data._id);
+    } else {
+      setSchedulingWindowId("");
     }
   };
 

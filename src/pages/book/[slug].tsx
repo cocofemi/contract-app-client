@@ -19,6 +19,7 @@ export default function BookingPage() {
   const [linkData, setLinkData] = useState<LinkData | null>(null);
 
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [answers, setAnswers] = useState<string[]>([]);
@@ -39,7 +40,6 @@ export default function BookingPage() {
         else router.push("/404");
       });
   }, [slug, router]);
-
   const handleSubmit = async () => {
     setLoading(true);
     const res = await fetch(
@@ -54,6 +54,7 @@ export default function BookingPage() {
           linkedin,
           answers,
           scheduledTime: selectedTime,
+          scheduledDate: selectedDate,
         }),
       }
     );
@@ -112,6 +113,16 @@ export default function BookingPage() {
             ))}
             {selectedTime && (
               <div className="mt-6 space-y-4">
+                <div>
+                  <label htmlFor="">Link expiry (date)</label>
+                  <input
+                    type="date"
+                    name="date"
+                    value={selectedDate || ""}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="w-full border rounded px-3 py-2"
+                  />
+                </div>
                 <div>
                   <label className="block font-medium">Your Email</label>
                   <input
