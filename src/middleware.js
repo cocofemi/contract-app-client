@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 export default async function middleware(req) {
   const loggedin = req.cookies.get("contract_app_user");
-  const { pathname } = req.nextUrl;
 
   // const protectedRoutes = ["*/dashboard"];
   const isDashboardRoute = req.nextUrl.pathname.startsWith("/dashboard");

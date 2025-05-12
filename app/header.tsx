@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 
@@ -11,7 +10,8 @@ function Header() {
     if (userToken) {
       setAuthenticated(true);
     }
-  });
+  }, [userToken]);
+
   return (
     <header className="container mx-auto px-5 py-2">
       <nav className="flex justify-between">

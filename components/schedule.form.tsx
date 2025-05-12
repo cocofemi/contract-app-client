@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Cookies from "universal-cookie";
 
 const weekdays = [
@@ -47,7 +47,7 @@ export default function AvailabilityForm({ userId }: Props) {
     setWindows(windows.filter((_, i) => i !== index));
   };
 
-  const fetchAvailability = async () => {
+  const fetchAvailability = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/schedule-dates?userId=${user?.userId}`
@@ -61,11 +61,11 @@ export default function AvailabilityForm({ userId }: Props) {
     } catch (err) {
       console.error("Error fetching availability:", err);
     }
-  };
+  }, [user?.userId]);
 
   useEffect(() => {
     fetchAvailability();
-  }, [userId]);
+  }, [fetchAvailability]);
 
   const handleSubmit = async () => {
     setLoading(true);

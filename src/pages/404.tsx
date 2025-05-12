@@ -12,8 +12,8 @@ function NotFound() {
               There was a problem with your request
             </h6>
             <p className="text-center">
-              We are sorry, your request couldn't be completed. Please try
-              again!
+              {` We are sorry, your request couldn't be completed. Please try
+              again!`}
             </p>
           </div>
         </div>

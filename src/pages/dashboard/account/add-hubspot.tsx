@@ -22,7 +22,7 @@ function AddHubspot() {
       console.log(res?.data.hubspot);
       setHubSpot(res?.data.hubspot);
     });
-  }, []);
+  });
 
   return (
     <Sidebar>

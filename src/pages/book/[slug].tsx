@@ -5,10 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function BookingPage() {
+  const router = useRouter();
   const cookies = new Cookies();
   const user = cookies.get("contract_app_user");
 
-  const router = useRouter();
   const { slug } = router.query;
   const [linkData, setLinkData] = useState<any>(null);
 
@@ -32,7 +32,7 @@ export default function BookingPage() {
         if (data.success) setLinkData(data.data);
         else router.push("/404");
       });
-  }, [slug]);
+  }, [slug, router]);
 
   const handleSubmit = async () => {
     setLoading(true);

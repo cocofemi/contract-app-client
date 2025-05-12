@@ -77,7 +77,7 @@ function EventsTable({ email }: Props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map((item: any, index: number) => (
+                  {events.map((item: any) => (
                     <tr
                       key={item.id}
                       className="border-b border-table_border bg-white text-gray-900 hover:bg-gray-50  "

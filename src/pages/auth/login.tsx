@@ -1,19 +1,16 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { googleLogin } from "../../../utils/auth";
 import { useRouter } from "next/router";
 import Cookies from "universal-cookie";
-import { connectGoogleCalendarPopup } from "../../../utils/events";
 
 function Login() {
   const cookies = new Cookies();
   const router = useRouter();
-  const [user, setUser] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = (googleData: any) => {
-    setLoading(true);
+    // setLoading(true);
     googleLogin(googleData)
       .then((res: any) => {
         console.log(res?.data);

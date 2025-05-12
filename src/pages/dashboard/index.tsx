@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "universal-cookie";
-import { useRouter } from "next/router";
-import Link from "next/link";
 
 import Sidebar from "../../../app/sidebar";
 import { googleCalendarEvents } from "../../../utils/events";
-import { gradient } from "../../../components/Gradient";
 
 function Dashboard() {
-  const cookies = new Cookies();
-
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState([]);
+  const [, setEvents] = useState([]);
 
   const [meetings, setMeetings] = useState<any[]>([]);
   useEffect(() => {
+    const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
     fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/meetings?userId=${user?.userId}`
@@ -27,9 +22,10 @@ function Dashboard() {
           setMeetings(data.data);
         }
       });
-  }, []);
+  });
 
   useEffect(() => {
+    const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
     googleCalendarEvents(user?.userId, user?.email).then((res: any) => {
       console.log(res);
@@ -40,10 +36,6 @@ function Dashboard() {
         setEvents([]);
       }
     });
-  }, []);
-
-  useEffect(() => {
-    gradient.initGradient("#gradient-canvas");
   }, []);
 
   return (

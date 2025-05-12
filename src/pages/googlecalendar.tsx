@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import googlecalendar from "../../public/google-calendar-svgrepo-com.svg";
-import Link from "next/link";
 import Cookies from "universal-cookie";
 
 function GoogleCalendar() {
