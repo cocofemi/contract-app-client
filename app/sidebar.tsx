@@ -140,7 +140,7 @@ function Sidebar({ children }: { children: React.ReactNode }) {
                   />
                 </svg>
 
-                <span className="ml-3">{userEmail}</span>
+                <span className="ml-3">{userEmail.slice(0, 16)}</span>
               </Link>
             </li>
             {connectedEmails.map((item) => (
