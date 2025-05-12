@@ -21,7 +21,7 @@ function AddHubspot() {
     getUser(user?.userId).then((res) => {
       setHubSpot(res?.data.hubspot);
     });
-  });
+  }, []);
 
   return (
     <Sidebar>

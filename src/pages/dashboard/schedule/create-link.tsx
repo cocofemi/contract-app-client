@@ -21,7 +21,7 @@ function CreateLinkForm() {
 
   useEffect(() => {
     getSchedule();
-  });
+  }, []);
 
   return (
     <CreateScheduleLinkForm

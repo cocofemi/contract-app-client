@@ -7,10 +7,10 @@ import Cookies from "universal-cookie";
 function Login() {
   const cookies = new Cookies();
   const router = useRouter();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleGoogleLogin = (googleData: unknown) => {
-    // setLoading(true);
+    setLoading(true);
     googleLogin(googleData)
       .then((res) => {
         console.log(res?.data);
@@ -54,6 +54,9 @@ function Login() {
                 />
               </GoogleOAuthProvider>
             </div>
+            {loading && (
+              <p className="text-center font-bold text-lg">Loading....</p>
+            )}
           </div>
         </div>
       </div>

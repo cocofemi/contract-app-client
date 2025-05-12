@@ -48,7 +48,7 @@ function Dashboard() {
           setMeetings(data.data);
         }
       });
-  });
+  }, []);
 
   useEffect(() => {
     const cookies = new Cookies();

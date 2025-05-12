@@ -24,15 +24,17 @@ function Sidebar({ children }: { children: React.ReactNode }) {
     const cookies = new Cookies();
     const user = cookies.get("contract_app_user");
 
-    getAccounts(user.userId).then((res) => {
-      if (res.status === 200) {
-        const emails = res?.data.accounts.map((item) => item.email);
-        setConnectedEmail(emails);
-      } else {
-        setConnectedEmail([]);
-      }
-    });
-  });
+    if (user) {
+      getAccounts(user.userId).then((res) => {
+        if (res.status === 200) {
+          const emails = res?.data.accounts.map((item) => item.email);
+          setConnectedEmail(emails);
+        } else {
+          setConnectedEmail([]);
+        }
+      });
+    }
+  }, []);
 
   //connected accounts runs a loop displaying emails
   //each emails passes props to the events table via link
