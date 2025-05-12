@@ -33,9 +33,16 @@ type Meetings = {
   slug: string;
 };
 
+type LinkData = {
+  _id: string;
+  meetingLength: number;
+  questions: [];
+};
+
 function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [, setEvents] = React.useState<CalendarEvent[]>([]);
+  const [linkDataMap, setLinkDataMap] = useState<Record<string, string[]>>({});
 
   const [meetings, setMeetings] = useState<Meetings[]>([]);
   useEffect(() => {
@@ -65,89 +72,125 @@ function Dashboard() {
     });
   }, []);
 
+  useEffect(() => {
+    if (meetings.length === 0) return;
+
+    meetings.forEach((meeting) => {
+      fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/scheduling-link/${meeting.slug}`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            const questions = data.data.questions;
+
+            setLinkDataMap((prev) => ({
+              ...prev,
+              [meeting._id]: questions, // or use meeting.slug as key
+            }));
+          }
+        })
+        .catch((err) => {
+          console.error(
+            `Failed to fetch link for meeting ${meeting.slug}`,
+            err
+          );
+        });
+    });
+  }, [meetings]);
+
+  console.log(linkDataMap);
+
   return (
     <Sidebar>
-      {!loading && (
-        <div className="my-4 bg-white px-4 pt-16 sm:ml-60 md:pt-20 lg:px-12">
-          <section>
-            <div className="relative mt-4 overflow-x-auto">
-              <div className="max-w-5xl mx-auto p-8 space-y-6">
-                <h1 className="text-2xl font-bold">Your Scheduled Meetings</h1>
-                {loading && <p>Loading....</p>}
-
-                {meetings.length === 0 && <p>No meetings found</p>}
-
-                {meetings.map((meeting) => (
-                  <div
-                    key={meeting._id}
-                    className="border border-gray-200 rounded p-4 space-y-2 bg-white shadow-sm"
-                  >
-                    <div className="flex justify-between">
-                      <div>
-                        <p>
-                          <strong>Email:</strong> {meeting.email}
-                        </p>
-                        {meeting.linkedin && (
+      <div className="my-4 bg-white px-4 pt-16 sm:ml-60 md:pt-20 lg:px-12">
+        <section>
+          <div className="relative mt-4 overflow-x-auto">
+            <div className="max-w-5xl mx-auto p-8 space-y-6">
+              <h1 className="text-2xl font-bold">Your Scheduled Meetings</h1>
+              {loading && <p>Loading....</p>}
+              {!loading && (
+                <>
+                  {meetings.length === 0 && <p>No meetings found</p>}
+                  {meetings.map((meeting) => (
+                    <div
+                      key={meeting._id}
+                      className="border border-gray-200 rounded p-4 space-y-2 bg-white shadow-sm"
+                    >
+                      <div className="flex justify-between">
+                        <div>
                           <p>
-                            <strong>LinkedIn:</strong>{" "}
+                            <strong>Email:</strong> {meeting.email}
+                          </p>
+                          {meeting.linkedin && (
+                            <p>
+                              <strong>LinkedIn:</strong>{" "}
+                              <Link
+                                href={meeting.linkedin}
+                                target="_blank"
+                                className="text-blue-600 underline"
+                              >
+                                View
+                              </Link>
+                            </p>
+                          )}
+                          <p>
+                            <strong>Scheduled Time:</strong>{" "}
+                            {meeting.scheduledTime}
+                          </p>
+                          <p>
+                            <strong>Scheduled Date:</strong>{" "}
+                            {meeting?.scheduledDate}
+                          </p>
+                          <p>
+                            <strong>Meeting Link: </strong>
                             <Link
-                              href={meeting.linkedin}
+                              href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/book/${meeting.slug}
+                          `}
                               target="_blank"
                               className="text-blue-600 underline"
                             >
                               View
                             </Link>
                           </p>
-                        )}
-                        <p>
-                          <strong>Scheduled Time:</strong>{" "}
-                          {meeting.scheduledTime}
-                        </p>
-                        <p>
-                          <strong>Scheduled Date:</strong>{" "}
-                          {meeting?.scheduledDate}
-                        </p>
-                        <p>
-                          <strong>Meeting Link: </strong>
-                          <Link
-                            href={`${process.env.NEXT_PUBLIC_CLIENT_URL}/book/${meeting.slug}
-                          `}
-                            target="_blank"
-                            className="text-blue-600 underline"
-                          >
-                            View
-                          </Link>
+                        </div>
+                        <p className="text-sm text-gray-500">
+                          📅 {new Date(meeting.createdAt).toLocaleString()}
                         </p>
                       </div>
-                      <p className="text-sm text-gray-500">
-                        📅 {new Date(meeting.createdAt).toLocaleString()}
-                      </p>
-                    </div>
 
-                    <div>
-                      <h3 className="font-semibold">Answers:</h3>
-                      <ul className="list-disc ml-6 text-sm">
-                        {meeting.answers.map((a: string, i: number) => (
-                          <li key={i}>{a}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {meeting.augmentedNotes && (
                       <div>
-                        <h3 className="font-semibold mt-2">🔍 AI Insights:</h3>
-                        <p className="text-gray-700 text-sm">
-                          {meeting.augmentedNotes}
-                        </p>
+                        <h3 className="font-bold underline">
+                          Question(s) & Answer(s):
+                        </h3>
+                        <ul className="space-y-2">
+                          {linkDataMap[meeting._id]?.map((question, i) => (
+                            <li key={i}>
+                              <strong>{question}</strong>:{" "}
+                              {meeting.answers[i] || "No answer"}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+
+                      {meeting.augmentedNotes && (
+                        <div>
+                          <h3 className="font-semibold mt-2">
+                            🔍 AI Insights:
+                          </h3>
+                          <p className="text-gray-700 text-sm">
+                            {meeting.augmentedNotes}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
-          </section>
-        </div>
-      )}
+          </div>
+        </section>
+      </div>
     </Sidebar>
   );
 }
