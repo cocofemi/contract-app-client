@@ -33,12 +33,6 @@ type Meetings = {
   slug: string;
 };
 
-type LinkData = {
-  _id: string;
-  meetingLength: number;
-  questions: [];
-};
-
 function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [, setEvents] = React.useState<CalendarEvent[]>([]);
@@ -98,8 +92,6 @@ function Dashboard() {
         });
     });
   }, [meetings]);
-
-  console.log(linkDataMap);
 
   return (
     <Sidebar>
