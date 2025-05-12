@@ -327,9 +327,9 @@ function Sidebar({ children }: { children: React.ReactNode }) {
             </li>
             <li>
               <Link
-                href="/dashboard/profile"
+                href="/dashboard/account/profile"
                 className={
-                  currentRoute === "/dashboard/profile"
+                  currentRoute === "/dashboard/account/profile"
                     ? activeStyle
                     : nonActiveStyle
                 }
